@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NgModel} from '@angular/forms';
 
 export class Phone{
   constructor(public title: string, 
@@ -9,44 +10,48 @@ export class Phone{
 
 @Component({
   selector: 'app-root',
-  template: `<div> 
+  template: `<div class="col-xs-10"> 
   <div class="form-group">
       <label>Название модели</label>
-      <input class="form-control" name="title" [(ngModel)]="title" />
+      <input class="form-control" name="title"
+          [(ngModel)]="phone.title" #phoneTitle="ngModel" />
   </div>
   <div class="form-group">
       <label>Цена</label>
-      <input type="number" class="form-control" name="price" [(ngModel)]="price" />
+      <input type="number" class="form-control" name="price"
+          [(ngModel)]="phone.price" #phonePrice="ngModel" />
   </div>
   <div class="form-group">
-      <label>Производитель</label>
-      <select class="form-control" name="company" [(ngModel)]="company">
+      <label>Производитель</label>
+      <select class="form-control" name="company"
+          [(ngModel)]="phone.company" #phoneCompany="ngModel">
           <option  *ngFor="let comp of companies" [value]="comp">
               {{comp}}
           </option>
       </select>
   </div>
   <div class="form-group">
-      <button class="btn btn-default" (click)="addPhone()">Добавить</button>
+      <button class="btn btn-default" (click)="addPhone(phoneTitle, phonePrice, phoneCompany)">
+          Добавить
+      </button>
   </div>
-</div>
-<div><h3>Добавленные элементы</h3>
-  <ul>
-      <li *ngFor="let p of phones">{{p.title}} ({{p.company}}) - {{p.price}}</li>
-  </ul>
+  <div>
+      <p>{{phoneTitle.name}} : {{phoneTitle.model}}</p>
+      <p>{{phonePrice.name}} : {{phonePrice.model}}</p>
+      <p>{{phoneCompany.name}} : {{phoneCompany.model}}</p>
+  </div>
 </div>`,
   styleUrls: ['./app.component.css']
 })
 
 export class AppComponent {
-  title: string = "";
-  price: number = 0;
-  company: string = "";
-   
-  phones: Phone[] = [];
+
+  phone: Phone = new Phone("", 0, "");
   companies: string[] = ["Apple", "Huawei", "Xiaomi", "Samsung", "LG", "Motorola", "Alcatel"];
    
-  addPhone(){
-      this.phones.push(new Phone(this.title, this.price, this.company));
+  addPhone(title:NgModel, price: NgModel, comp: NgModel){
+      console.log("title", title);
+      console.log(price);
+      console.log(comp);
   }
 }
